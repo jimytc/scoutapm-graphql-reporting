@@ -1,14 +1,36 @@
 version: "2.4"
 services:
-  rails:
+  rails: &base
     build:
       context: .
+    environment:
+      ENABLE_GRAPHQL_SCOUT: "false"
+      SCOUT_NAME: ScoutAPM no graphql tracing
     volumes:
       - .:/myapp
       - bundle:/usr/local/bundle
-    command: /bin/sh -c "bundle exec rails s -p 3000 -b '0.0.0.0'"
+    command: /bin/sh -c "rm -f /tmp/server-rails.pid && bundle exec rails s -p 3000 -b '0.0.0.0' -P /tmp/server-rails.pid"
     ports:
       - 3000:3000
 
+  rails-gql-scout:
+    <<: *base
+    environment:
+      ENABLE_GRAPHQL_SCOUT: "true"
+      ENABLE_GRAPHQL_RENAME: "false"
+      SCOUT_NAME: ScoutAPM with graphql tracing
+    command: /bin/sh -c "rm -f /tmp/server-rails-gql-scout.pid && bundle exec rails s -p 3000 -b '0.0.0.0' -P /tmp/server-rails-gql-scout.pid"
+    ports:
+      - 3001:3000
+
+  rails-gql-scout-rename:
+    <<: *base
+    environment:
+      ENABLE_GRAPHQL_SCOUT: "true"
+      ENABLE_GRAPHQL_RENAME: "true"
+      SCOUT_NAME: ScoutAPM with graphql tracing rename
+    command: /bin/sh -c "rm -f /tmp/server-rails-gql-scout-rename.pid && bundle exec rails s -p 3000 -b '0.0.0.0' -P /tmp/server-rails-gql-scout-rename.pid"
+    ports:
+      - 3002:3000
 volumes:
   bundle:
