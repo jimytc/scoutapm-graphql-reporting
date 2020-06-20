@@ -7,6 +7,7 @@ end
 
 gem 'scout_apm'
 gem 'graphql', '~> 1.10.10'
+gem 'typhoeus'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.7'

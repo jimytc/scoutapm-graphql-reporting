@@ -1,9 +1,7 @@
 # This configuration file is used for Scout APM.
 # Environment variables can also be used to configure Scout. See our help docs at https://docs.scoutapm.com#environment-variables for more information.
 common: &defaults
-  key: xdhSJRmMFMi1FxUGz2lB
   log_level: debug
-
   monitor: false
 
 development:

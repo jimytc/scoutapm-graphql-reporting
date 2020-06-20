@@ -1,24 +1,38 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Requirements
 
-Things you may want to cover:
+* Ruby 2.4.1
+* docker 17.0
+* docker-compose 2.4
 
-* Ruby version
+### Configure your ScoutAPM key
 
-* System dependencies
+Modify `docker-compose.yml` for `SCOUT_KEY`
 
-* Configuration
+```docker
+# ...
 
-* Database creation
+    environment:
+      SCOUT_KEY: <your_scoutapm_key>
 
-* Database initialization
+# ...
+```
 
-* How to run the test suite
+### Install dependencies
 
-* Services (job queues, cache servers, search engines, etc.)
+```bash
+$ bundle install
+```
 
-* Deployment instructions
+### Start services
+```bash
+$ docker-compose build
+$ docker-compose up -d
+```
 
-* ...
+### Send GraphQL requests
+
+```bash
+$ ruby scripts/batch_graphql_req.rb
+```
