@@ -4,33 +4,43 @@ services:
     build:
       context: .
     environment:
-      ENABLE_GRAPHQL_SCOUT: "false"
-      SCOUT_NAME: ScoutAPM no graphql tracing
+      SCOUT_NAME: With Controller
     volumes:
       - .:/myapp
-      - bundle:/usr/local/bundle
-    command: /bin/sh -c "rm -f /tmp/server-rails.pid && bundle exec rails s -p 3000 -b '0.0.0.0' -P /tmp/server-rails.pid"
+      - /tmp/scout/rails/tmp:/myapp/tmp
+      - /tmp/scout/rails/log:/myapp/log
+      - bundle-rails:/usr/local/bundle
+    command: /bin/sh -c "rm -f /tmp/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0' -P /tmp/server.pid"
     ports:
       - 3000:3000
 
   rails-gql-scout:
     <<: *base
     environment:
-      ENABLE_GRAPHQL_SCOUT: "true"
-      ENABLE_GRAPHQL_RENAME: "false"
-      SCOUT_NAME: ScoutAPM with graphql tracing
-    command: /bin/sh -c "rm -f /tmp/server-rails-gql-scout.pid && bundle exec rails s -p 3000 -b '0.0.0.0' -P /tmp/server-rails-gql-scout.pid"
+      ENABLE_GRAPHQL_SCOUT: y
+      SCOUT_NAME: With GraphQL Tracing
+    volumes:
+      - .:/myapp
+      - /tmp/scout/gql/tmp:/myapp/tmp
+      - /tmp/scout/gql/log:/myapp/log
+      - bundle-rails-gql-scout:/usr/local/bundle
     ports:
       - 3001:3000
 
   rails-gql-scout-rename:
     <<: *base
     environment:
-      ENABLE_GRAPHQL_SCOUT: "true"
-      ENABLE_GRAPHQL_RENAME: "true"
-      SCOUT_NAME: ScoutAPM with graphql tracing rename
-    command: /bin/sh -c "rm -f /tmp/server-rails-gql-scout-rename.pid && bundle exec rails s -p 3000 -b '0.0.0.0' -P /tmp/server-rails-gql-scout-rename.pid"
+      ENABLE_GRAPHQL_SCOUT: y
+      ENABLE_GRAPHQL_RENAME: y
+      SCOUT_NAME: With GraphQL Tracing Rename
+    volumes:
+      - .:/myapp
+      - /tmp/scout/gql-rename/tmp:/myapp/tmp
+      - /tmp/scout/gql-rename/log:/myapp/log
+      - bundle-rails-gql-scout-rename:/usr/local/bundle
     ports:
       - 3002:3000
 volumes:
-  bundle:
+  bundle-rails:
+  bundle-rails-gql-scout:
+  bundle-rails-gql-scout-rename:

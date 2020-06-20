@@ -8,17 +8,19 @@ class ScoutapmGraphqlReportingSchema < GraphQL::Schema
   use GraphQL::Execution::Interpreter
   use GraphQL::Analysis::AST
 
+  Rails.logger.debug("ENV['ENABLE_GRAPHQL_SCOUT'] = #{ENV['ENABLE_GRAPHQL_SCOUT']}")
+  Rails.logger.debug("ENV['ENABLE_GRAPHQL_RENAME'] = #{ENV['ENABLE_GRAPHQL_RENAME']}")
   if ENV['ENABLE_GRAPHQL_SCOUT']
-    Rails.logger.info('[Scout] Use GraphQL::Tracing::ScoutTracing')
+    puts('[Scout] Use GraphQL::Tracing::ScoutTracing')
     if ENV['ENABLE_GRAPHQL_RENAME']
-      Rails.logger.info('[Scout][GraphQL::Tracing::ScoutTracing] set_transaction_name = true')
+      puts('[Scout][GraphQL::Tracing::ScoutTracing] set_transaction_name = true')
       use GraphQL::Tracing::ScoutTracing, set_transaction_name: true
     else
-      Rails.logger.info('[Scout][GraphQL::Tracing::ScoutTracing] set_transaction_name = nil')
+      puts('[Scout][GraphQL::Tracing::ScoutTracing] set_transaction_name = nil')
       use GraphQL::Tracing::ScoutTracing
     end
   else
-    Rails.logger.info('[Scout] Default Rails integration')
+    puts('[Scout] Default Rails integration')
   end
 
   # Add built-in connections for pagination
